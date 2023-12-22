@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Journal</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <h1>Redigera inlägg</h1>
+    <form method="post" th:action="@{/save-entry}" th:object="${journal}">
+        <input type="hidden" th:field="*{id}" />
+        <p>Rubrik</p>
+        <input type="text" th:field="*{title}" />
+        <p>Text</p>
+        <textarea th:field="*{text}" rows="4"></textarea>
+        <p>Datum</p>
+        <input type="datetime-local" th:field="*{date}" />
+        <button type="submit">Spara ändringar</button>
+    </form>
+</body>
+</html>

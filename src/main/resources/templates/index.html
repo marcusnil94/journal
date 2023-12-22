@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Journal</title>
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-    <h1>Dagbok</h1>
+    <h1>Dagboken</h1>
+    <div>
+        <form method="post" th:action="@{/new-entry}">
+            <div class="formBox">
+                <label for="entryTitle">Rubrik</label>
+                <input type="text" id="entryTitle" name="entryTitle">
+            </div>
+            <div class="formBox">
+                <label for="entryText">Text</label>
+                <textarea id="entryText" name="entryText" rows="5"></textarea>
+            </div>
+            <div class="formBox">
+                <label for="date">Datum</label>
+                <input type="datetime-local" id="date" name="date">
+            </div>
+            <button type="submit">Spara</button>
+        </form>
+    </div>
+    <ul>
+        <li th:each="journal : ${journalEntries}" th:unless="${journal.date.isAfter(T(java.time.LocalDateTime).now())}">
+            <h3>
+                <span th:text="${journal.title}"></span>
+            </h3>
+            <p th:text="${journal.text}"></p>
+            <p th:text="${journal.date.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm'))}"></p>
+            <p>
+                <button><a th:href="@{delete(id=${journal.id})}">Ta bort</a></button>
+                <button><a th:href="@{edit(id=${journal.id})}">Redigera</a></button>
+            </p>
+        </li>
+    </ul>
 </body>
 </html>
